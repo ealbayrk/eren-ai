@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Eren CV Assistant</title>
+
+  <style>
+    :root{
+      --bg-grad-start:#0f172a;
+      --bg-grad-end:#111827;
+      --card-bg:rgba(15,23,42,0.85);
+      --accent:#38bdf8;                /* daha "kurumsal/finans" ton */
+      --accent-soft:rgba(56,189,248,0.15);
+      --text-main:#e5e7eb;
+      --text-muted:#9ca3af;
+      --border-subtle:rgba(148,163,184,0.4);
+      --radius-lg:18px;
+      --radius-full:999px;
+      --shadow-soft:0 18px 40px rgba(0,0,0,0.55);
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+
+    body{
+      min-height:100vh;
+      font-family:system-ui,-apple-system,BlinkMacSystemFont,"SF Pro Text",sans-serif;
+      background:radial-gradient(circle at top,#1e293b 0,#020617 55%,#000 100%);
+      display:flex;align-items:center;justify-content:center;
+      padding:24px;color:var(--text-main);
+    }
+
+    .shell{max-width:960px;width:100%}
+
+    .card{
+      background:linear-gradient(135deg,rgba(15,23,42,0.96),rgba(17,24,39,0.94));
+      border-radius:24px;
+      box-shadow:var(--shadow-soft);
+      border:1px solid rgba(148,163,184,0.4);
+      padding:24px;
+      display:grid;
+      grid-template-columns:minmax(0,3.5fr) minmax(260px,2.2fr);
+      gap:24px;
+      backdrop-filter:blur(20px);
+    }
+
+    @media (max-width:800px){ .card{grid-template-columns:minmax(0,1fr)} }
+
+    /* LEFT */
+    .chat-section{display:flex;flex-direction:column;gap:16px}
+
+    .badge{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:4px 12px;border-radius:var(--radius-full);
+      background:rgba(148,163,184,0.08);
+      border:1px solid rgba(148,163,184,0.35);
+      font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+      color:var(--text-muted);
+      width:100%;
+    }
+    .badge-dot{
+      width:8px;height:8px;border-radius:50%;
+      background:#22c55e;
+      box-shadow:0 0 0 4px rgba(34,197,94,0.2);
+      flex:0 0 auto;
+    }
+    .badge-text{flex:1 1 auto}
+
+    .title-row{display:flex;flex-direction:column;gap:6px}
+    .title-row h1{font-size:24px;letter-spacing:.04em}
+    .title-row span{font-size:13px;color:var(--text-muted)}
+
+    .intro{
+      font-size:13px;color:var(--text-muted);
+      line-height:1.6;margin-top:8px;
+    }
+
+    .pill-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+    .pill{
+      font-size:11px;padding:5px 10px;
+      border-radius:var(--radius-full);
+      background:rgba(15,23,42,0.9);
+      border:1px solid rgba(148,163,184,0.45);
+      color:var(--text-muted);
+      display:inline-flex;align-items:center;gap:6px;
+    }
+    .pill-dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+
+    .chatbox{
+      margin-top:14px;
+      padding:14px;border-radius:16px;
+      background:radial-gradient(circle at top left,rgba(248,250,252,0.04),rgba(15,23,42,0.96));
+      border:1px solid rgba(148,163,184,0.35);
+      height:320px;overflow-y:auto;
+      display:flex;flex-direction:column;gap:10px;
+      scroll-behavior:smooth;
+    }
+
+    .message{
+      padding:9px 12px;border-radius:12px;
+      font-size:13px;line-height:1.5;
+      max-width:82%;
+      position:relative;
+      word-break:break-word;
+    }
+
+    .bot{
+      align-self:flex-start;
+      background:rgba(15,23,42,0.95);
+      border:1px solid rgba(148,163,184,0.5);
+    }
+    .bot::before{
+      content:"EK";
+      position:absolute;top:-16px;left:0;
+      font-size:10px;letter-spacing:.14em;
+      color:var(--accent);text-transform:uppercase;
+    }
+    .user{
+      align-self:flex-end;
+      background:rgba(56,189,248,0.12);
+      border:1px solid rgba(56,189,248,0.6);
+    }
+
+    .choice-wrap{margin-top:10px;display:flex;flex-wrap:wrap;gap:8px}
+    .choice-btn{
+      border-radius:999px;padding:8px 12px;
+      border:1px solid rgba(148,163,184,0.55);
+      background:rgba(15,23,42,0.85);
+      color:var(--text-main);font-size:12px;
+      cursor:pointer;transition:.15s ease;
+    }
+    .choice-btn.secondary{border-style:dashed;color:var(--text-muted)}
+    .choice-btn:hover{
+      border-color:var(--accent);
+      box-shadow:0 0 0 4px rgba(56,189,248,0.12);
+      transform:translateY(-1px);
+    }
+    .choice-btn:disabled{opacity:.45;cursor:default;transform:none;box-shadow:none}
+
+    .input-area{margin-top:12px;display:flex;align-items:center;gap:8px}
+    .input-wrapper{position:relative;flex:1}
+    .input-wrapper input{
+      width:100%;
+      padding:11px 80px 11px 11px;
+      border-radius:var(--radius-full);
+      border:1px solid rgba(148,163,184,0.6);
+      background:rgba(15,23,42,0.9);
+      color:var(--text-main);
+      font-size:13px;outline:none;
+    }
+    .input-wrapper input::placeholder{color:#6b7280}
+    .shortcut-hint{
+      position:absolute;right:10px;top:50%;
+      transform:translateY(-50%);
+      font-size:10px;color:#6b7280;
+      border-radius:999px;border:1px solid rgba(75,85,99,0.7);
+      padding:2px 6px;
+    }
+    .send-btn{
+      border-radius:var(--radius-full);
+      padding:10px 14px;border:none;
+      background:linear-gradient(135deg,#38bdf8,#7dd3fc);
+      color:#0b1120;font-size:13px;font-weight:600;
+      cursor:pointer;display:inline-flex;align-items:center;gap:6px;
+      box-shadow:0 10px 25px rgba(56,189,248,0.35);
+      white-space:nowrap;transition:.15s ease;
+    }
+    .send-btn:hover{filter:brightness(1.05);transform:translateY(-1px)}
+    .send-btn:active{transform:translateY(0);box-shadow:0 6px 18px rgba(56,189,248,0.28)}
+    .send-btn span{font-size:16px;transform:translateY(1px)}
+
+    .bottom-menu{
+      position:sticky;bottom:0;padding-top:10px;
+      display:flex;gap:8px;flex-wrap:wrap;
+      background:linear-gradient(180deg,rgba(2,6,23,0) 0%,rgba(2,6,23,0.75) 35%,rgba(2,6,23,0.95) 100%);
+      backdrop-filter:blur(10px);z-index:5;
+    }
+    .bm-btn{
+      border-radius:999px;padding:8px 12px;
+      border:1px solid rgba(148,163,184,0.55);
+      background:rgba(15,23,42,0.85);
+      color:var(--text-main);font-size:12px;
+      cursor:pointer;transition:.15s ease;
+    }
+    .bm-btn:hover{
+      border-color:var(--accent);
+      box-shadow:0 0 0 4px rgba(56,189,248,0.12);
+      transform:translateY(-1px);
+    }
+
+    .quick-questions{margin-top:10px;display:flex;flex-wrap:wrap;gap:6px}
+    .quick-btn{
+      font-size:11px;padding:5px 9px;border-radius:var(--radius-full);
+      border:1px dashed rgba(148,163,184,0.7);
+      background:rgba(15,23,42,0.8);
+      color:var(--text-muted);
+      cursor:pointer;
+    }
+    .quick-btn:hover{border-style:solid;color:var(--accent)}
+
+    /* RIGHT */
+    .side-section{
+      border-left:1px solid rgba(148,163,184,0.38);
+      padding-left:20px;
+      display:flex;flex-direction:column;gap:16px;
+    }
+    @media (max-width:800px){
+      .side-section{border-left:none;border-top:1px solid rgba(148,163,184,0.38);padding-left:0;padding-top:18px;margin-top:6px}
+    }
+
+    .profile-row{display:flex;align-items:center;gap:12px}
+    .avatar{
+      width:58px;height:58px;border-radius:50%;
+      border:2px solid rgba(56,189,248,0.8);
+      background-size:cover;background-position:center;
+      /* TODO: Foto URL'sini buraya koy */
+      background-image:url("AVATAR_URL");
+      background-color:rgba(148,163,184,0.12);
+    }
+    .profile-text h2{font-size:16px;letter-spacing:.06em;text-transform:uppercase}
+    .profile-text p{font-size:12px;color:var(--text-muted)}
+
+    .tag-list{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+    .tag{
+      font-size:11px;padding:4px 8px;border-radius:var(--radius-full);
+      background:rgba(15,23,42,0.9);
+      border:1px solid rgba(148,163,184,0.5);
+      color:var(--text-muted);
+    }
+
+    .section-title{
+      margin-top:8px;font-size:12px;
+      text-transform:uppercase;letter-spacing:.12em;
+      color:var(--text-muted);
+    }
+    .section-body{margin-top:4px;font-size:12px;color:var(--text-main);line-height:1.6}
+    .section-body span{color:var(--accent);font-weight:500}
+
+    .link-box{
+      margin-top:10px;padding:10px 12px;border-radius:12px;
+      background:rgba(15,23,42,0.9);
+      border:1px dashed rgba(148,163,184,0.6);
+      font-size:11px;color:var(--text-muted);
+    }
+    .link-box a{color:var(--accent);text-decoration:none;font-weight:500}
+    .link-box a:hover{text-decoration:underline}
+
+    /* MOBILE tweaks */
+    @media (max-width:520px){
+      body{padding:14px}
+      .card{padding:14px;gap:14px;border-radius:18px}
+      .title-row h1{font-size:18px;line-height:1.25}
+      .title-row span{font-size:12px}
+      .pill{font-size:10px;padding:4px 8px}
+      .chatbox{height:52vh;min-height:320px;padding:12px;border-radius:14px;-webkit-overflow-scrolling:touch}
+      .message{max-width:92%;font-size:13px}
+      .input-area{gap:10px}
+      .input-wrapper input{padding:12px 78px 12px 12px;font-size:14px}
+      .send-btn{padding:11px 14px}
+      .bm-btn{flex:1 1 calc(50% - 4px);text-align:center;padding:10px 12px}
+      .avatar{width:46px;height:46px}
+      .profile-text h2{font-size:14px}
+    }
+
+    body{min-height:100dvh}
+    @media (max-width:800px){ body{align-items:flex-start;justify-content:flex-start}.shell{width:100%}.card{width:100%} }
+
+    @supports (padding:max(0px,0px)){ body{padding-bottom:max(14px,env(safe-area-inset-bottom))} }
+
+    @media (max-width:520px){
+      .input-area{
+        position:sticky;bottom:10px;z-index:10;
+        padding:10px;border-radius:16px;
+        background:rgba(2,6,23,0.75);
+        backdrop-filter:blur(10px);
+        border:1px solid rgba(148,163,184,0.25);
+      }
+      .chatbox{padding-bottom:120px}
+      .bottom-menu{position:static}
+    }
+
+    /* LANGUAGE dropdown */
+    .lang-select{position:relative;margin-left:auto}
+    .lang-current{
+      display:flex;align-items:center;gap:6px;
+      padding:8px 14px;border-radius:999px;
+      border:1px solid rgba(148,163,184,0.55);
+      background:rgba(15,23,42,0.85);
+      color:var(--text-main);font-size:12px;
+      cursor:pointer;transition:.15s ease;
+    }
+    .lang-current:hover{
+      border-color:var(--accent);
+      box-shadow:0 0 0 4px rgba(56,189,248,0.12);
+    }
+    .lang-menu{
+      position:absolute;right:0;top:110%;
+      min-width:120px;background:#f8fafc;color:#0f172a;
+      border-radius:14px;box-shadow:0 18px 40px rgba(0,0,0,0.25);
+      overflow:hidden;display:none;z-index:20;
+    }
+    .lang-menu button{
+      width:100%;padding:12px;font-size:14px;
+      background:transparent;border:none;cursor:pointer;
+      transition:background .15s ease;
+    }
+    .lang-menu button:hover{background:rgba(15,23,42,0.06)}
+    .lang-select.open .lang-menu{display:block}
+  </style>
+</head>
+
+<body>
+<div class="shell">
+  <div class="card">
+    <!-- LEFT -->
+    <section class="chat-section">
+      <div class="badge">
+        <span class="badge-dot"></span>
+        <span class="badge-text" id="liveLabel">EREN CV ASSISTANT · LIVE</span>
+
+        <div class="lang-select">
+          <button class="lang-current" id="langToggle">🌍 TR <span class="chevron">▾</span></button>
+          <div class="lang-menu" id="langMenu">
+            <button data-lang="tr">TR</button>
+            <button data-lang="en">EN</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="title-row">
+        <h1 id="uiTitle">Eren’in CV Asistanı</h1>
+        <span id="uiSubtitle">Eren Kayalı hakkında (denetim, muhasebe, raporlama, yetkinlikler) hızlı bilgi almak için.</span>
+      </div>
+
+      <p class="intro" id="uiIntro">
+        Eren’in <span style="color:var(--accent);">bağımsız denetim</span>,
+        <span style="color:var(--accent);">finansal analiz</span> ve
+        <span style="color:var(--accent);">KDV süreçleri</span> deneyimleriyle ilgili soruları buradan sorabilirsiniz.
+      </p>
+
+      <div class="pill-row">
+        <div class="pill"><span class="pill-dot"></span> <span id="pill1">Denetim · Working Papers · Analiz</span></div>
+        <div class="pill"><span class="pill-dot"></span> <span id="pill2">Mutabakat · Teyit · Stok Sayımı</span></div>
+        <div class="pill"><span class="pill-dot"></span> <span id="pill3">Excel · SAP · İngilizce (B2)</span></div>
+      </div>
+
+      <div id="chat" class="chatbox"></div>
+
+      <div class="input-area">
+        <div class="input-wrapper">
+          <input type="text" id="userInput" placeholder="Bir soru yazın... Örn: 'Denetimde hangi hesaplarda çalıştı?'" />
+          <div class="shortcut-hint" id="hintEnter">Enter ↵</div>
+        </div>
+        <button class="send-btn" id="sendBtn"><span id="sendText">Gönder</span> <span>➜</span></button>
+      </div>
+
+      <div class="bottom-menu">
+        <button class="bm-btn" data-bm="BACK_MENU" id="bmMain">Ana Menü</button>
+        <button class="bm-btn" data-bm="MENU_AUDIT" id="bmAudit">Denetim</button>
+        <button class="bm-btn" data-bm="MENU_TAX" id="bmTax">KDV / Vergi</button>
+        <button class="bm-btn" data-bm="MENU_SKILLS" id="bmSkills">Yetenekler</button>
+      </div>
+
+      <div class="quick-questions">
+        <button class="quick-btn"
+          data-q-tr="Neden Eren’i işe almalıyız?"
+          data-q-en="Why should we hire Eren?">Why / Neden?</button>
+
+        <button class="quick-btn"
+          data-q-tr="Denetimde hangi hesaplarda çalıştı?"
+          data-q-en="Which audit areas/accounts did he work on?">Denetim</button>
+
+        <button class="quick-btn"
+          data-q-tr="Excel ve SAP yetkinliği nedir?"
+          data_q-en="What is his Excel & SAP proficiency?">Excel / SAP</button>
+
+        <button class="quick-btn"
+          data-q-tr="SGS hazırlığı hangi aşamada?"
+          data-q-en="What is his SGS preparation status?">SGS</button>
+
+        <button class="quick-btn"
+          data-q-tr="Hangi sektörlerde şirket denetimlerinde yer aldı?"
+          data-q-en="Which industries has he been exposed to?">Sektör</button>
+      </div>
+    </section>
+
+    <!-- RIGHT -->
+    <aside class="side-section">
+      <div class="profile-row">
+        <div class="avatar"></div>
+        <div class="profile-text">
+          <h2>EREN KAYALI</h2>
+          <p id="sideRole">Denetim Asistanı · İstanbul</p>
+        </div>
+      </div>
+
+      <div class="tag-list">
+        <div class="tag" id="tag1">Audit Assistant</div>
+        <div class="tag" id="tag2">Financial Analysis</div>
+        <div class="tag" id="tag3">Excel & SAP</div>
+      </div>
+
+      <div>
+        <div class="section-title" id="sideTitle1">Öne çıkan alanlar</div>
+        <div class="section-body" id="sideBody1">
+          Eren; <span>bağımsız denetim</span> süreçlerinde çalışma kağıtları hazırlayan,
+          <span>mutabakat/teyit/stok sayımı</span> gibi denetim kanıtı toplama adımlarında aktif rol alan bir denetim asistanıdır.
+          Ayrıca <span>Excel</span> ve <span>SAP</span> ile analitik raporlama tarafında yetkindir.
+        </div>
+      </div>
+
+      <div>
+        <div class="section-title" id="sideTitle2">Neleri sorabilirsiniz?</div>
+        <div class="section-body" id="sideBody2">
+          ▸ Denetim prosedürleri ve detay testleri<br/>
+          ▸ Çalışılan hesaplar (nakit/banka, alacak, borç, stok, MDV)<br/>
+          ▸ Working papers & finansal analiz yaklaşımı<br/>
+          ▸ KDV süreçleri ve evrak akışı<br/>
+          ▸ SGS hazırlık durumu
+        </div>
+      </div>
+
+      <div class="link-box" id="sideLinks">
+        Daha kapsamlı bilgi için Eren’in
+        <a href="https://www.linkedin.com/in/eren-kayali-04395019a/" target="_blank" rel="noopener noreferrer">LinkedIn profiline</a>
+        göz atabilirsiniz.<br/><br/>
+        E-posta:
+        <a href="mailto:eren.kayali0304@hotmail.com?subject=Eren%20CV%20Assistant%20-%20Contact">eren.kayali0304@hotmail.com</a>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const chatEl     = document.getElementById("chat");
+  const inputEl    = document.getElementById("userInput");
+  const sendBtn    = document.getElementById("sendBtn");
+  const sendTextEl = document.getElementById("sendText");
+  const langToggle = document.getElementById("langToggle");
+  const langMenu   = document.getElementById("langMenu");
+  const langSelect = document.querySelector(".lang-select");
+
+  // ======================
+  // LANGUAGE (TR/EN)
+  // ======================
+  let lang = localStorage.getItem("lang") || "tr"; // "tr" | "en"
+
+  const I18N = {
+    tr: {
+      live: "EREN CV ASSISTANT · LIVE",
+      title: "Eren’in CV Asistanı",
+      subtitle: "Eren Kayalı hakkında (denetim, muhasebe, raporlama, yetkinlikler) hızlı bilgi almak için.",
+      intro: `Eren’in <span style="color:var(--accent);">bağımsız denetim</span>, <span style="color:var(--accent);">finansal analiz</span> ve <span style="color:var(--accent);">KDV süreçleri</span> deneyimleriyle ilgili soruları buradan sorabilirsiniz.`,
+      placeholder: "Bir soru yazın... Örn: 'Denetimde hangi hesaplarda çalıştı?'",
+      send: "Gönder",
+      typing: "Yazıyor...",
+      askName: "Merhaba 👋 Ben Eren’in CV Asistanıyım.<br/><br/>İstersen ismini öğrenip daha kişisel yanıt verebilirim. İsmini paylaşmak ister misin?",
+      nameYes: "Evet, ismimi paylaşayım",
+      nameNo: "Hayır, isim vermeden devam",
+      writeName: "Harika 😊 İsmini yazar mısın?",
+      couldNotReadName: "İsmini tam anlayamadım ama sorun değil 🙂 Tekrar yazmak ister misin?",
+      niceToMeet: (n)=>`Tanıştığıma memnun oldum <b>${n}</b> ☺️`,
+      mainMenu: (n)=>`Harika${n?` <b>${n}</b>`:""}. Aşağıdaki başlıklardan seçebilir veya serbest soru sorabilirsin:`,
+      fallbackContact: `
+        Bu noktada en doğru bilgi için Eren’e doğrudan ulaşmak daha iyi olabilir.<br/><br/>
+        LinkedIn: <a href="https://www.linkedin.com/in/eren-kayali-04395019a/" target="_blank" rel="noopener noreferrer">profil</a><br/>
+        E-posta: <a href="mailto:eren.kayali0304@hotmail.com">eren.kayali0304@hotmail.com</a>
+      `,
+      bm: { main:"Ana Menü", audit:"Denetim", tax:"KDV / Vergi", skills:"Yetenekler" },
+      side: {
+        role: "Denetim Asistanı · İstanbul",
+        t1: "Öne çıkan alanlar",
+        b1: `Eren; <span>bağımsız denetim</span> süreçlerinde çalışma kağıtları hazırlayan,
+             <span>mutabakat/teyit/stok sayımı</span> gibi denetim kanıtı toplama adımlarında aktif rol alan bir denetim asistanıdır.
+             Ayrıca <span>Excel</span> ve <span>SAP</span> ile analitik raporlama tarafında yetkindir.`,
+        t2: "Neleri sorabilirsiniz?",
+        b2: `▸ Denetim prosedürleri ve detay testleri<br/>
+             ▸ Çalışılan hesaplar (nakit/banka, alacak, borç, stok, MDV)<br/>
+             ▸ Working papers & finansal analiz yaklaşımı<br/>
+             ▸ KDV süreçleri ve evrak akışı<br/>
+             ▸ SGS hazırlık durumu`
+      }
+    },
+
+    en: {
+      live: "EREN CV ASSISTANT · LIVE",
+      title: "Eren's CV Assistant",
+      subtitle: "A quick way to learn about Eren Kayalı (audit, accounting, reporting, skills).",
+      intro: `Ask questions about Eren’s experience in <span style="color:var(--accent);">independent audit</span>, <span style="color:var(--accent);">financial analysis</span>, and <span style="color:var(--accent);">VAT/tax processes</span>.`,
+      placeholder: "Ask a question... e.g., 'Which audit areas did he work on?'",
+      send: "Send",
+      typing: "Typing...",
+      askName: "Hi 👋 I'm Eren’s CV Assistant.<br/><br/>If you share your name, I can answer more personally. Would you like to?",
+      nameYes: "Yes, I'll share my name",
+      nameNo: "Continue without a name",
+      writeName: "Great 😊 Please type your name:",
+      couldNotReadName: "I couldn’t catch your name, but no worries 🙂 Want to try again?",
+      niceToMeet: (n)=>`Nice to meet you <b>${n}</b> ☺️`,
+      mainMenu: (n)=>`Awesome${n?` <b>${n}</b>`:""}. Choose a topic below or ask anything:`,
+      fallbackContact: `
+        For the most accurate info, it may be best to contact Eren directly.<br/><br/>
+        LinkedIn: <a href="https://www.linkedin.com/in/eren-kayali-04395019a/" target="_blank" rel="noopener noreferrer">profile</a><br/>
+        Email: <a href="mailto:eren.kayali0304@hotmail.com">eren.kayali0304@hotmail.com</a>
+      `,
+      bm: { main:"Main Menu", audit:"Audit", tax:"VAT / Tax", skills:"Skills" },
+      side: {
+        role: "Audit Assistant · Istanbul",
+        t1: "Highlights",
+        b1: `Eren is an <span>audit assistant</span> experienced in preparing working papers and supporting audit evidence collection such as
+             <span>bank reconciliations, confirmations, and inventory counts</span>. He is also strong in <span>Excel</span> and <span>SAP</span> for analytical reporting.`,
+        t2: "What can you ask?",
+        b2: `▸ Audit procedures & substantive testing<br/>
+             ▸ Accounts tested (cash/bank, AR, AP, inventory, PPE)<br/>
+             ▸ Working papers & financial analysis approach<br/>
+             ▸ VAT/tax document flow<br/>
+             ▸ SGS exam preparation`
+      }
+    }
+  };
+
+  // ======================
+  // KNOWLEDGE BASE (CV CONTENT)
+  // ======================
+  const KB = {
+    tr: {
+      profile: `
+        <b>Eren Kayalı</b>, İstanbul Medeniyet Üniversitesi İşletme mezunu olup denetim ve muhasebe süreçlerinde
+        analitik yaklaşımıyla öne çıkan bir denetim asistanıdır.<br/><br/>
+        Kariyerinde Ozt Lojistik (ön muhasebe stajı) ve Boğaziçi YMM (KDV bölümü) deneyimlerinden sonra bağımsız denetim tarafında görev almış,
+        <b>08/2025 – Devam Ediyor</b> döneminde RSM’de denetim çalışmalarında aktif rol almaktadır.
+      `,
+      audit: {
+        overview: `
+          <b>Denetim Deneyimi</b><br/>
+          • Denetim prosedürleri ve detay testleri<br/>
+          • Nakit/banka, ticari alacak/borç, stok, maddi duran varlık hesapları<br/>
+          • Banka mutabakatları, teyitler, stok sayımları<br/>
+          • Working papers ve finansal analizler<br/>
+          • Müşteri iletişimi ve doküman temini<br/>
+          • Bulguların değerlendirilmesi ve raporlama desteği<br/>
+          • Sigorta dahil farklı sektörlerde deneyim
+        `,
+        accounts: `
+          <b>Çalışılan Başlıca Hesaplar</b><br/>
+          Nakit & Banka · Ticari Alacaklar · Ticari Borçlar · Stoklar · Maddi Duran Varlıklar
+        `,
+        evidence: `
+          <b>Denetim Kanıtı Toplama</b><br/>
+          Banka mutabakatı · Alacak/Borç teyitleri · Fiziki stok sayımı katılımı · Doküman kontrolü
+        `
+      },
+      tax: {
+        overview: `
+          <b>KDV / Vergi Süreçleri (Boğaziçi YMM)</b><br/>
+          • KDV iade süreçlerinde evrak toplama, düzenleme ve raporlama<br/>
+          • Dosyalama ve mevzuata uygun takip<br/>
+          • Eksik evrakların müşteri ile tamamlanması ve koordinasyon
+        `
+      },
+      skills: `
+        <b>Yetenekler</b><br/>
+        • Excel (ileri düzey raporlama & analiz)<br/>
+        • Microsoft Office<br/>
+        • SAP<br/>
+        • SAS<br/>
+        • İngilizce (B2)
+      `,
+      education: `
+        <b>Eğitim</b><br/>
+        İstanbul Medeniyet Üniversitesi – İşletme (2018–2023)
+      `,
+      sgs: `
+        <b>SGS</b><br/>
+        SMMM Staja Giriş Sınavı (SGS) hazırlığı devam etmektedir; bu süreçte sürekli öğrenme ve mesleki gelişime önem verir.
+      `,
+      whyHire: `
+        <b>Neden Eren?</b><br/><br/>
+        Denetim süreçlerinde hem analitik hem de disiplinli çalışır: kanıt toplama, çalışma kağıdı düzeni ve müşteri iletişimi tarafında güvenilir ilerler.
+        Excel/SAP gibi araçlarla raporlama ve kontrol süreçlerini destekler.
+      `,
+      interview: `
+        <b>Mülakat Modu</b><br/>
+        • “Denetimde en çok hangi hesaplarda çalıştın?”<br/>
+        • “Working papers hazırlarken yaklaşımın ne?”<br/>
+        • “Mutabakat/teyit süreçlerinde sorumluluğun neydi?”<br/>
+        • “SGS hedefin ve planın nedir?”
+      `,
+      contact: `
+        <b>İletişim</b><br/>
+        • LinkedIn: <a href="https://www.linkedin.com/in/eren-kayali-04395019a/" target="_blank" rel="noopener noreferrer">profil</a><br/>
+        • E-posta: <a href="mailto:eren.kayali0304@hotmail.com">eren.kayali0304@hotmail.com</a>
+      `
+    },
+
+    en: {
+      profile: `
+        <b>Eren Kayalı</b> is a Business Administration graduate (Istanbul Medeniyet University) with a strong interest in audit,
+        accounting processes, and analytical work.<br/><br/>
+        After experiences in accounting (Ozt Logistics internship) and VAT processes (Boğaziçi CPA firm / YMM),
+        he moved into independent audit and has been actively working at RSM since <b>08/2025 – Present</b>.
+      `,
+      audit: {
+        overview: `
+          <b>Audit Experience</b><br/>
+          • Audit procedures & substantive testing<br/>
+          • Cash/bank, AR/AP, inventory, PPE<br/>
+          • Bank reconciliations, confirmations, inventory counts<br/>
+          • Working papers & financial analysis<br/>
+          • Client communication & document collection<br/>
+          • Supporting findings evaluation & reporting<br/>
+          • Exposure across multiple industries (incl. insurance)
+        `,
+        accounts: `
+          <b>Main Accounts Covered</b><br/>
+          Cash & Bank · Trade Receivables · Trade Payables · Inventory · Property, Plant & Equipment (PPE)
+        `,
+        evidence: `
+          <b>Audit Evidence</b><br/>
+          Bank reconciliations · AR/AP confirmations · Inventory counts · Document testing
+        `
+      },
+      tax: {
+        overview: `
+          <b>VAT / Tax Processes</b><br/>
+          • Collecting, organizing, and reporting VAT refund documents<br/>
+          • File management & compliance tracking<br/>
+          • Coordinating missing documents with clients
+        `
+      },
+      skills: `
+        <b>Skills</b><br/>
+        • Excel (reporting & analysis)<br/>
+        • Microsoft Office<br/>
+        • SAP<br/>
+        • SAS<br/>
+        • English (B2)
+      `,
+      education: `
+        <b>Education</b><br/>
+        Istanbul Medeniyet University – Business Administration (2018–2023)
+      `,
+      sgs: `
+        <b>SGS</b><br/>
+        Currently preparing for the Chartered Accountant internship entry exam (SGS) and prioritizes continuous learning.
+      `,
+      whyHire: `
+        <b>Why Eren?</b><br/><br/>
+        Reliable and structured in audit execution: evidence collection, working paper discipline, and client coordination.
+        Supports reporting with strong Excel/SAP-driven analysis.
+      `,
+      interview: `
+        <b>Interview Mode</b><br/>
+        • “Which audit areas/accounts did you work on?”<br/>
+        • “How do you approach working papers?”<br/>
+        • “What was your role in reconciliations/confirmations?”<br/>
+        • “What is your SGS plan and goal?”
+      `,
+      contact: `
+        <b>Contact</b><br/>
+        • LinkedIn: <a href="https://www.linkedin.com/in/eren-kayali-04395019a/" target="_blank" rel="noopener noreferrer">profile</a><br/>
+        • Email: <a href="mailto:eren.kayali0304@hotmail.com">eren.kayali0304@hotmail.com</a>
+      `
+    }
+  };
+
+  // ======================
+  // UI HELPERS
+  // ======================
+  function appendMessage(html, who){
+    const msg = document.createElement("div");
+    msg.className = "message " + who;
+    msg.innerHTML = html;
+    chatEl.appendChild(msg);
+    chatEl.scrollTop = chatEl.scrollHeight;
+  }
+
+  function botSay(text, choices){
+    let html = text;
+    if (choices && choices.length){
+      html += `<div class="choice-wrap">
+        ${choices.map(c => `
+          <button class="choice-btn ${c.secondary ? "secondary" : ""}" data-choice="${c.value}">
+            ${c.label}
+          </button>
+        `).join("")}
+      </div>`;
+    }
+    appendMessage(html, "bot");
+  }
+
+  function userSay(text){ appendMessage(text, "user"); }
+
+  function typing(ms=320){
+    const t = document.createElement("div");
+    t.className = "message bot";
+    t.textContent = I18N[lang].typing;
+    chatEl.appendChild(t);
+    chatEl.scrollTop = chatEl.scrollHeight;
+    return new Promise(res => setTimeout(() => { t.remove(); res(); }, ms));
+  }
+
+  // ======================
+  // STATE
+  // ======================
+  let state = "askName"; // askName | awaitingName | mainMenu | auditMenu | taxMenu | skillsMenu
+  let userName = null;
+
+  // ======================
+  // LABEL MAP
+  // ======================
+  const mapLabel = {
+    tr: {
+      NAME_YES:"Evet, ismimi paylaşayım",
+      NAME_NO:"Hayır, isim vermeden devam",
+      MENU_PROFILE:"Eren Kimdir?",
+      MENU_AUDIT:"Denetim Deneyimi",
+      MENU_AUDIT_ACCOUNTS:"Çalışılan Hesaplar",
+      MENU_AUDIT_EVIDENCE:"Kanıt / Mutabakat / Teyit",
+      MENU_TAX:"KDV / Vergi Deneyimi",
+      MENU_SKILLS:"Yetenekler",
+      MENU_EDU:"Eğitim",
+      MENU_SGS:"SGS",
+      MENU_WHY:"Neden Eren?",
+      MENU_INTERVIEW:"Mülakat Modu",
+      MENU_CONTACT:"İletişim",
+      BACK_MENU:"Ana Menü",
+    },
+    en: {
+      NAME_YES:"Yes, I'll share my name",
+      NAME_NO:"Continue without a name",
+      MENU_PROFILE:"Who is Eren?",
+      MENU_AUDIT:"Audit Experience",
+      MENU_AUDIT_ACCOUNTS:"Accounts Covered",
+      MENU_AUDIT_EVIDENCE:"Evidence / Reconciliations",
+      MENU_TAX:"VAT / Tax Experience",
+      MENU_SKILLS:"Skills",
+      MENU_EDU:"Education",
+      MENU_SGS:"SGS",
+      MENU_WHY:"Why Eren?",
+      MENU_INTERVIEW:"Interview Mode",
+      MENU_CONTACT:"Contact",
+      BACK_MENU:"Main Menu",
+    }
+  };
+
+  // ======================
+  // MENUS
+  // ======================
+  function startFlow(){
+    state = "askName";
+    botSay(I18N[lang].askName,[
+      {label:I18N[lang].nameYes, value:"NAME_YES"},
+      {label:I18N[lang].nameNo,  value:"NAME_NO", secondary:true}
+    ]);
+  }
+
+  function goMainMenu(){
+    state="mainMenu";
+    botSay(I18N[lang].mainMenu(userName),[
+      {label: mapLabel[lang].MENU_PROFILE, value:"MENU_PROFILE"},
+      {label: mapLabel[lang].MENU_AUDIT, value:"MENU_AUDIT"},
+      {label: mapLabel[lang].MENU_TAX, value:"MENU_TAX"},
+      {label: mapLabel[lang].MENU_SKILLS, value:"MENU_SKILLS"},
+      {label: mapLabel[lang].MENU_EDU, value:"MENU_EDU", secondary:true},
+      {label: mapLabel[lang].MENU_SGS, value:"MENU_SGS", secondary:true},
+      {label: mapLabel[lang].MENU_WHY, value:"MENU_WHY", secondary:true},
+      {label: mapLabel[lang].MENU_INTERVIEW, value:"MENU_INTERVIEW", secondary:true},
+      {label: mapLabel[lang].MENU_CONTACT, value:"MENU_CONTACT", secondary:true},
+    ]);
+  }
+
+  function goAuditMenu(){
+    state="auditMenu";
+    botSay(lang==="tr" ? "Denetim tarafında hangi başlık?" : "Which audit topic?",[
+      {label: mapLabel[lang].MENU_AUDIT, value:"AUDIT_OVERVIEW"},
+      {label: mapLabel[lang].MENU_AUDIT_ACCOUNTS, value:"AUDIT_ACCOUNTS"},
+      {label: mapLabel[lang].MENU_AUDIT_EVIDENCE, value:"AUDIT_EVIDENCE"},
+      {label: mapLabel[lang].BACK_MENU, value:"BACK_MENU", secondary:true},
+    ]);
+  }
+
+  // ======================
+  // CHOICE HANDLER
+  // ======================
+  async function handleChoice(value, clickedButton){
+    const wrap = clickedButton?.closest?.(".choice-wrap");
+    if (wrap) wrap.querySelectorAll("button").forEach(b => b.disabled = true);
+
+    userSay(mapLabel[lang][value] || value);
+    await typing(220);
+
+    if (value==="NAME_YES"){ state="awaitingName"; botSay(I18N[lang].writeName); return; }
+    if (value==="NAME_NO"){ userName=null; goMainMenu(); return; }
+
+    if (value==="BACK_MENU"){ goMainMenu(); return; }
+    if (value==="MENU_AUDIT"){ goAuditMenu(); return; }
+
+    if (value==="MENU_PROFILE"){ botSay(KB[lang].profile,[{label:mapLabel[lang].BACK_MENU,value:"BACK_MENU",secondary:true}]); return; }
+    if (value==="MENU_TAX"){ botSay(KB[lang].tax.overview,[{label:mapLabel[lang].BACK_MENU,value:"BACK_MENU",secondary:true}]); return; }
+    if (value==="MENU_SKILLS"){ botSay(KB[lang].skills,[{label:mapLabel[lang].BACK_MENU,value:"BACK_MENU",secondary:true}]); return; }
+    if (value==="MENU_EDU"){ botSay(KB[lang].education,[{label:mapLabel[lang].BACK_MENU,value:"BACK_MENU",secondary:true}]); return; }
+    if (value==="MENU_SGS"){ botSay(KB[lang].sgs,[{label:mapLabel[lang].BACK_MENU,value:"BACK_MENU",secondary:true}]); return; }
+    if (value==="MENU_WHY"){ botSay(KB[lang].whyHire,[{label:mapLabel[lang].BACK_MENU,value:"BACK_MENU",secondary:true}]); return; }
+    if (value==="MENU_INTERVIEW"){ botSay(KB[lang].interview,[{label:mapLabel[lang].BACK_MENU,value:"BACK_MENU",secondary:true}]); return; }
+    if (value==="MENU_CONTACT"){ botSay(KB[lang].contact,[{label:mapLabel[lang].BACK_MENU,value:"BACK_MENU",secondary:true}]); return; }
+
+    // audit menu items
+    if (value==="AUDIT_OVERVIEW"){ botSay(KB[lang].audit.overview,[{label: mapLabel[lang].MENU_AUDIT, value:"MENU_AUDIT"},{label:mapLabel[lang].BACK_MENU,value:"BACK_MENU",secondary:true}]); return; }
+    if (value==="AUDIT_ACCOUNTS"){ botSay(KB[lang].audit.accounts,[{label: mapLabel[lang].MENU_AUDIT, value:"MENU_AUDIT"},{label:mapLabel[lang].BACK_MENU,value:"BACK_MENU",secondary:true}]); return; }
+    if (value==="AUDIT_EVIDENCE"){ botSay(KB[lang].audit.evidence,[{label: mapLabel[lang].MENU_AUDIT, value:"MENU_AUDIT"},{label:mapLabel[lang].BACK_MENU,value:"BACK_MENU",secondary:true}]); return; }
+
+    botSay(I18N[lang].fallbackContact,[{label:mapLabel[lang].BACK_MENU,value:"BACK_MENU"}]);
+  }
+
+  // ======================
+  // FREE TEXT SEARCH
+  // ======================
+  function normalizeText(text){
+    return (text||"").toLowerCase()
+      .replace(/ı/g,"i").replace(/ş/g,"s").replace(/ğ/g,"g").replace(/ü/g,"u").replace(/ö/g,"o").replace(/ç/g,"c")
+      .replace(/â|î|û/g,"").trim();
+  }
+
+  function extractName(text){
+    const raw=(text||"").trim();
+    if (/^[a-zA-ZçğıöşüİĞÜŞÖÇ]{2,20}$/.test(raw)) return raw;
+    const patterns=[
+      /(?:ben|adim|adım|ismim)\s+([a-zA-ZçğıöşüİĞÜŞÖÇ]{2,20})/i,
+      /(?:my name is|i am)\s+([a-zA-Z]{2,20})/i
+    ];
+    for (const p of patterns){
+      const m=raw.match(p);
+      if (m) return m[1];
+    }
+    return null;
+  }
+
+  function getKnowledgeBase(){
+    return [
+      { keywords:(lang==="tr")?["neden eren","neden ise almalıyiz","neden işe almalıyız","neden secmeliyim","neden"]:["why eren","why hire","why should we hire"], answer: KB[lang].whyHire },
+      { keywords:(lang==="tr")?["denetim","audit","working papers","calisma kagidi","çalışma kağıdı","mutabakat","teyit","stok sayimi","stok sayımı","banka"]:["audit","working papers","reconciliation","confirmation","inventory"], answer: KB[lang].audit.overview },
+      { keywords:(lang==="tr")?["hesap","nakit","banka","alacak","borc","borç","stok","mdv","maddi duran varlik"]:["accounts","cash","bank","ar","ap","inventory","ppe"], answer: KB[lang].audit.accounts },
+      { keywords:(lang==="tr")?["kdv","vergi","iade","ymm","dosya","mevzuat"]:["vat","tax","refund","cpa","documents"], answer: KB[lang].tax.overview },
+      { keywords:(lang==="tr")?["excel","sap","sas","office","ingilizce","b2","yetenek"]:["excel","sap","sas","office","english","skills"], answer: KB[lang].skills },
+      { keywords:(lang==="tr")?["sgs","staja giris","staja giriş","smmm"]:["sgs","chartered","exam"], answer: KB[lang].sgs },
+      { keywords:(lang==="tr")?["egitim","medeniyet","universite","üniversite","isletme","işletme"]:["education","university","business"], answer: KB[lang].education },
+      { keywords:(lang==="tr")?["iletisim","iletişim","linkedin","mail","e-posta","email"]:["contact","linkedin","email"], answer: KB[lang].contact }
+    ];
+  }
+
+  function findBestAnswer(text){
+    const input=normalizeText(text);
+    const kb=getKnowledgeBase();
+    let best=null,bestScore=0;
+
+    for (const item of kb){
+      let score=0;
+      for (const kw of item.keywords){
+        const normKw=normalizeText(kw);
+        if (!normKw) continue;
+        if (input.includes(normKw)) score++;
+      }
+      if (score>bestScore){ bestScore=score; best=item.answer; }
+    }
+    return bestScore>0 ? best : I18N[lang].fallbackContact;
+  }
+
+  // ======================
+  // SEND
+  // ======================
+  async function sendMessage(){
+    const text=inputEl.value.trim();
+    if (!text) return;
+
+    userSay(text);
+    inputEl.value="";
+    await typing(320);
+
+    if (state==="awaitingName"){
+      const extracted=extractName(text);
+      if (extracted){
+        userName=extracted;
+        botSay(I18N[lang].niceToMeet(userName));
+        await typing(200);
+        goMainMenu();
+      } else {
+        botSay(I18N[lang].couldNotReadName);
+      }
+      return;
+    }
+
+    // askName state: let user either give name or ask directly
+    if (state==="askName"){
+      const extracted=extractName(text);
+      if (extracted){
+        userName=extracted;
+        botSay(I18N[lang].niceToMeet(userName));
+        await typing(200);
+        goMainMenu();
+        return;
+      }
+      const ans=findBestAnswer(text);
+      botSay(ans,[{label:I18N[lang].nameNo,value:"NAME_NO",secondary:true}]);
+      await typing(200);
+      goMainMenu();
+      return;
+    }
+
+    const ans=findBestAnswer(text);
+    botSay(ans);
+  }
+
+  // ======================
+  // APPLY LANGUAGE
+  // ======================
+  function applyLang(){
+    document.documentElement.lang = lang;
+    document.getElementById("liveLabel").innerText = I18N[lang].live;
+    document.getElementById("uiTitle").innerText = I18N[lang].title;
+    document.getElementById("uiSubtitle").innerText = I18N[lang].subtitle;
+    document.getElementById("uiIntro").innerHTML = I18N[lang].intro;
+
+    document.getElementById("pill1").innerText = (lang==="tr") ? "Denetim · Working Papers · Analiz" : "Audit · Working Papers · Analysis";
+    document.getElementById("pill2").innerText = (lang==="tr") ? "Mutabakat · Teyit · Stok Sayımı" : "Reconciliation · Confirmations · Inventory Count";
+    document.getElementById("pill3").innerText = (lang==="tr") ? "Excel · SAP · İngilizce (B2)" : "Excel · SAP · English (B2)";
+
+    inputEl.placeholder = I18N[lang].placeholder;
+    sendTextEl.innerText = I18N[lang].send;
+
+    // bottom menu
+    document.getElementById("bmMain").innerText   = I18N[lang].bm.main;
+    document.getElementById("bmAudit").innerText  = I18N[lang].bm.audit;
+    document.getElementById("bmTax").innerText    = I18N[lang].bm.tax;
+    document.getElementById("bmSkills").innerText = I18N[lang].bm.skills;
+
+    // right side
+    document.getElementById("sideRole").innerText   = I18N[lang].side.role;
+    document.getElementById("sideTitle1").innerText = I18N[lang].side.t1;
+    document.getElementById("sideBody1").innerHTML  = I18N[lang].side.b1;
+    document.getElementById("sideTitle2").innerText = I18N[lang].side.t2;
+    document.getElementById("sideBody2").innerHTML  = I18N[lang].side.b2;
+
+    const langLabel = (lang==="tr") ? "TR" : "EN";
+    langToggle.innerHTML = `🌍 ${langLabel} <span class="chevron">▾</span>`;
+  }
+
+  // ======================
+  // EVENTS
+  // ======================
+  chatEl.addEventListener("click", (e) => {
+    const btn = e.target.closest(".choice-btn");
+    if (!btn) return;
+    handleChoice(btn.getAttribute("data-choice"), btn);
+  });
+
+  document.addEventListener("click", (e) => {
+    const bm = e.target.closest(".bm-btn");
+    if (!bm) return;
+    handleChoice(bm.getAttribute("data-bm"), bm);
+  });
+
+  document.addEventListener("click", (e) => {
+    const qb = e.target.closest(".quick-btn");
+    if (!qb) return;
+    const q = (lang==="tr") ? qb.getAttribute("data-q-tr") : qb.getAttribute("data-q-en");
+    inputEl.value = q || "";
+    inputEl.focus();
+  });
+
+  langToggle.addEventListener("click", (e) => {
+    e.stopPropagation();
+    langSelect.classList.toggle("open");
+  });
+
+  langMenu.addEventListener("click", (e) => {
+    const btn = e.target.closest("button[data-lang]");
+    if (!btn) return;
+
+    lang = btn.dataset.lang;
+    localStorage.setItem("lang", lang);
+    applyLang();
+
+    chatEl.innerHTML = "";
+    userName = null;
+    startFlow();
+
+    langSelect.classList.remove("open");
+  });
+
+  document.addEventListener("click", (e) => {
+    if (!langSelect.contains(e.target)) langSelect.classList.remove("open");
+  });
+
+  sendBtn.addEventListener("click", sendMessage);
+  inputEl.addEventListener("keydown", (e) => {
+    if (e.key === "Enter"){ e.preventDefault(); sendMessage(); }
+  });
+
+  // ======================
+  // INIT
+  // ======================
+  applyLang();
+  startFlow();
+});
+</script>
+</body>
+</html>
