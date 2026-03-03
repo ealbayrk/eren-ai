@@ -522,151 +522,176 @@ document.addEventListener("DOMContentLoaded", () => {
   // ======================
   // KNOWLEDGE BASE (CV CONTENT)
   // ======================
-  const KB = {
-    tr: {
-      profile: `
-        <b>Eren Kayalı</b>, İstanbul Medeniyet Üniversitesi İşletme mezunu olup denetim ve muhasebe süreçlerinde
-        analitik yaklaşımıyla öne çıkan bir denetim asistanıdır.<br/><br/>
-        Kariyerinde Ozt Lojistik (ön muhasebe stajı) ve Boğaziçi YMM (KDV bölümü) deneyimlerinden sonra bağımsız denetim tarafında görev almış,
-        <b>08/2025 – Devam Ediyor</b> döneminde RSM’de denetim çalışmalarında aktif rol almaktadır.
+ const KB = {
+  tr: {
+    profile: `
+      <b>Eren Kayalı</b>, İstanbul Medeniyet Üniversitesi İşletme mezunu; bağımsız denetim ve muhasebe süreçlerinde
+      <b>analitik</b>, <b>düzenli</b> ve <b>sonuç odaklı</b> yaklaşımıyla öne çıkan bir denetim asistanıdır.<br/><br/>
+      Ozt Lojistik’te ön muhasebe stajıyla temel operasyonel süreçleri deneyimlemiş; Boğaziçi YMM’de KDV iade dosyalarında
+      evrak–mevzuat uyumunu ve takip disiplinini geliştirmiştir. <b>08/2025 – Devam Ediyor</b> döneminde RSM İstanbul’da;
+      denetim planına uygun şekilde sahada ve ofiste çalışarak <b>kanıt toplama</b>, <b>çalışma kağıdı</b> ve <b>raporlama</b>
+      süreçlerine aktif katkı sağlamaktadır.
+    `,
+
+    audit: {
+      overview: `
+        <b>Denetim Deneyimi</b><br/>
+        • Finansal tabloların doğruluğunu değerlendirmek amacıyla denetim prosedürleri ve detay testleri uygulama<br/>
+        • Nakit/banka, ticari alacak/borç, stok ve maddi duran varlık hesaplarında test ve analiz çalışmaları yürütme<br/>
+        • Banka mutabakatları, alacak–borç teyitleri ve stok sayımlarında denetim kanıtı toplama<br/>
+        • Çalışma kağıtları (working papers) ve finansal analiz çıktıları hazırlama, dosya düzeni ve izlenebilirlik sağlama<br/>
+        • Müşteri ile koordinasyon kurarak gerekli veri ve dokümanların zamanında temin edilmesini sağlama<br/>
+        • Denetim bulgularının değerlendirilmesi ve raporlama süreçlerinde Senior denetçilere destek olma<br/>
+        • Sigorta dahil farklı sektörlerde denetim çalışmalarında yer alarak sektörel risk ve süreç farklarına uyum sağlama
       `,
-      audit: {
-        overview: `
-          <b>Denetim Deneyimi</b><br/>
-          • Denetim prosedürleri ve detay testleri<br/>
-          • Nakit/banka, ticari alacak/borç, stok, maddi duran varlık hesapları<br/>
-          • Banka mutabakatları, teyitler, stok sayımları<br/>
-          • Working papers ve finansal analizler<br/>
-          • Müşteri iletişimi ve doküman temini<br/>
-          • Bulguların değerlendirilmesi ve raporlama desteği<br/>
-          • Sigorta dahil farklı sektörlerde deneyim
-        `,
-        accounts: `
-          <b>Çalışılan Başlıca Hesaplar</b><br/>
-          Nakit & Banka · Ticari Alacaklar · Ticari Borçlar · Stoklar · Maddi Duran Varlıklar
-        `,
-        evidence: `
-          <b>Denetim Kanıtı Toplama</b><br/>
-          Banka mutabakatı · Alacak/Borç teyitleri · Fiziki stok sayımı katılımı · Doküman kontrolü
-        `
-      },
-      tax: {
-        overview: `
-          <b>KDV / Vergi Süreçleri (Boğaziçi YMM)</b><br/>
-          • KDV iade süreçlerinde evrak toplama, düzenleme ve raporlama<br/>
-          • Dosyalama ve mevzuata uygun takip<br/>
-          • Eksik evrakların müşteri ile tamamlanması ve koordinasyon
-        `
-      },
-      skills: `
-        <b>Yetenekler</b><br/>
-        • Excel (ileri düzey raporlama & analiz)<br/>
-        • Microsoft Office<br/>
-        • SAP<br/>
-        • SAS<br/>
-        • Caseware<br/>
-        • Idea<br/>
-        • İngilizce (B2)
-        
+
+      accounts: `
+        <b>Çalışılan Başlıca Hesaplar</b><br/>
+        Nakit & Banka · Ticari Alacaklar · Ticari Borçlar · Stoklar · Maddi Duran Varlıklar
       `,
-      education: `
-        <b>Eğitim</b><br/>
-        İstanbul Medeniyet Üniversitesi – İşletme (2018–2023)
-      `,
-      sgs: `
-        <b>SGS</b><br/>
-        SMMM Staja Giriş Sınavı (SGS) hazırlığı devam etmektedir; bu süreçte sürekli öğrenme ve mesleki gelişime önem verir.
-      `,
-      whyHire: `
-        <b>Neden Eren?</b><br/><br/>
-        Denetim süreçlerinde hem analitik hem de disiplinli çalışır: kanıt toplama, çalışma kağıdı düzeni ve müşteri iletişimi tarafında güvenilir ilerler.
-        Excel/SAP gibi araçlarla raporlama ve kontrol süreçlerini destekler.
-      `,
-      interview: `
-        <b>Mülakat Modu</b><br/>
-        • “Denetimde en çok hangi hesaplarda çalıştın?”<br/>
-        • “Working papers hazırlarken yaklaşımın ne?”<br/>
-        • “Mutabakat/teyit süreçlerinde sorumluluğun neydi?”<br/>
-        • “SGS hedefin ve planın nedir?”
-      `,
-      contact: `
-        <b>İletişim</b><br/>
-        • LinkedIn: <a href="https://www.linkedin.com/in/eren-kayali-04395019a/" target="_blank" rel="noopener noreferrer">profil</a><br/>
-        • E-posta: <a href="mailto:eren.kayali0304@hotmail.com">eren.kayali0304@hotmail.com</a>
+
+      evidence: `
+        <b>Denetim Kanıtı Toplama</b><br/>
+        Banka mutabakatı · Alacak/Borç teyitleri · Fiziki stok sayımı katılımı · Doküman inceleme ve kontrol testleri
       `
     },
 
-    en: {
-      profile: `
-        <b>Eren Kayalı</b> is a Business Administration graduate (Istanbul Medeniyet University) with a strong interest in audit,
-        accounting processes, and analytical work.<br/><br/>
-        After experiences in accounting (Ozt Logistics internship) and VAT processes (Boğaziçi CPA firm / YMM),
-        he moved into independent audit and has been actively working at RSM since <b>08/2025 – Present</b>.
-      `,
-      audit: {
-        overview: `
-          <b>Audit Experience</b><br/>
-          • Audit procedures & substantive testing<br/>
-          • Cash/bank, AR/AP, inventory, PPE<br/>
-          • Bank reconciliations, confirmations, inventory counts<br/>
-          • Working papers & financial analysis<br/>
-          • Client communication & document collection<br/>
-          • Supporting findings evaluation & reporting<br/>
-          • Exposure across multiple industries (incl. insurance)
-        `,
-        accounts: `
-          <b>Main Accounts Covered</b><br/>
-          Cash & Bank · Trade Receivables · Trade Payables · Inventory · Property, Plant & Equipment (PPE)
-        `,
-        evidence: `
-          <b>Audit Evidence</b><br/>
-          Bank reconciliations · AR/AP confirmations · Inventory counts · Document testing
-        `
-      },
-      tax: {
-        overview: `
-          <b>VAT / Tax Processes</b><br/>
-          • Collecting, organizing, and reporting VAT refund documents<br/>
-          • File management & compliance tracking<br/>
-          • Coordinating missing documents with clients
-        `
-      },
-      skills: `
-        <b>Skills</b><br/>
-        • Excel (reporting & analysis)<br/>
-        • Microsoft Office<br/>
-        • SAP<br/>
-        • SAS<br/>
-        • English (B2)
-      `,
-      education: `
-        <b>Education</b><br/>
-        Istanbul Medeniyet University – Business Administration (2018–2023)
-      `,
-      sgs: `
-        <b>SGS</b><br/>
-        Currently preparing for the Chartered Accountant internship entry exam (SGS) and prioritizes continuous learning.
-      `,
-      whyHire: `
-        <b>Why Eren?</b><br/><br/>
-        Reliable and structured in audit execution: evidence collection, working paper discipline, and client coordination.
-        Supports reporting with strong Excel/SAP-driven analysis.
-      `,
-      interview: `
-        <b>Interview Mode</b><br/>
-        • “Which audit areas/accounts did you work on?”<br/>
-        • “How do you approach working papers?”<br/>
-        • “What was your role in reconciliations/confirmations?”<br/>
-        • “What is your SGS plan and goal?”
-      `,
-      contact: `
-        <b>Contact</b><br/>
-        • LinkedIn: <a href="https://www.linkedin.com/in/eren-kayali-04395019a/" target="_blank" rel="noopener noreferrer">profile</a><br/>
-        • Email: <a href="mailto:eren.kayali0304@hotmail.com">eren.kayali0304@hotmail.com</a>
+    tax: {
+      overview: `
+        <b>KDV / Vergi Süreçleri (Boğaziçi YMM)</b><br/>
+        • KDV iade dosyalarında evrak toplama, sınıflandırma ve raporlama süreçlerine destek<br/>
+        • Mevzuata uygun dosyalama ve takip düzeni oluşturma/koruma<br/>
+        • Eksik evrakların müşteri ile tamamlanması için iletişim ve koordinasyon yürütme
       `
-    }
-  };
+    },
 
+    skills: `
+      <b>Yetenekler</b><br/>
+      • Excel (ileri düzey raporlama & analiz)<br/>
+      • Microsoft Office<br/>
+      • SAP<br/>
+      • SAS<br/>
+      • CaseWare<br/>
+      • IDEA<br/>
+      • İngilizce (B2)
+    `,
+
+    education: `
+      <b>Eğitim</b><br/>
+      İstanbul Medeniyet Üniversitesi – İşletme (2018–2023)
+    `,
+
+    sgs: `
+      <b>SGS</b><br/>
+      SMMM Staja Giriş Sınavı (SGS) hazırlığı devam etmektedir; bu süreçte sürekli öğrenmeye ve mesleki gelişime önem verir.
+    `,
+
+    whyHire: `
+      <b>Neden Eren?</b><br/><br/>
+      Eren; denetimde <b>kanıt odaklı</b> ilerleyen, çalışma kağıdı disiplinine önem veren ve müşteri iletişimini
+      profesyonel şekilde yöneten bir profildir. Excel/SAP gibi araçlarla raporlama ve kontrol süreçlerini
+      destekleyerek ekip içi iş akışının daha düzenli ilerlemesine katkı sağlar.
+    `,
+
+    interview: `
+      <b>Mülakat Modu</b><br/>
+      • “Denetimde en çok hangi hesaplarda çalıştın, nasıl bir yaklaşım izledin?”<br/>
+      • “Working papers hazırlarken kalite ve izlenebilirliği nasıl sağlıyorsun?”<br/>
+      • “Mutabakat/teyit süreçlerinde sorumluluğun neydi, hangi riskleri takip ettin?”<br/>
+      • “SGS hedefin ve çalışma planın nedir?”
+    `,
+
+    contact: `
+      <b>İletişim</b><br/>
+      • LinkedIn: <a href="https://www.linkedin.com/in/eren-kayali-04395019a/" target="_blank" rel="noopener noreferrer">profil</a><br/>
+      • E-posta: <a href="mailto:eren.kayali0304@hotmail.com">eren.kayali0304@hotmail.com</a>
+    `
+  },
+
+  en: {
+    profile: `
+      <b>Eren Kayalı</b> is a Business Administration graduate (Istanbul Medeniyet University) with a strong focus on
+      <b>independent audit</b>, <b>financial analysis</b>, and <b>structured execution</b>.<br/><br/>
+      He built a solid foundation through an accounting internship at Ozt Logistics and VAT refund file workflows at a CPA firm (Boğaziçi YMM).
+      Since <b>08/2025 – Present</b>, he has been contributing at RSM Istanbul, supporting audit engagements with
+      <b>evidence collection</b>, <b>working paper discipline</b>, and <b>client coordination</b>.
+    `,
+
+    audit: {
+      overview: `
+        <b>Audit Experience</b><br/>
+        • Executing audit procedures and substantive testing to assess financial statement accuracy<br/>
+        • Performing tests and analysis across cash/bank, AR/AP, inventory, and PPE accounts<br/>
+        • Supporting audit evidence collection via bank reconciliations, confirmations, and inventory counts<br/>
+        • Preparing working papers and financial analysis outputs with strong traceability and file discipline<br/>
+        • Coordinating with clients to collect required data and documentation on time<br/>
+        • Supporting seniors in evaluating findings and contributing to reporting stages<br/>
+        • Exposure across multiple industries (including insurance), adapting to sector-specific risks and processes
+      `,
+
+      accounts: `
+        <b>Main Accounts Covered</b><br/>
+        Cash & Bank · Trade Receivables · Trade Payables · Inventory · Property, Plant & Equipment (PPE)
+      `,
+
+      evidence: `
+        <b>Audit Evidence</b><br/>
+        Bank reconciliations · AR/AP confirmations · Inventory counts · Document testing and control procedures
+      `
+    },
+
+    tax: {
+      overview: `
+        <b>VAT / Tax Processes</b><br/>
+        • Supporting VAT refund files: collecting, organizing, and reporting documentation<br/>
+        • File management and compliance-focused tracking<br/>
+        • Coordinating missing documents and follow-ups with clients
+      `
+    },
+
+    skills: `
+      <b>Skills</b><br/>
+      • Excel (reporting & analysis)<br/>
+      • Microsoft Office<br/>
+      • SAP<br/>
+      • SAS<br/>
+      • CaseWare<br/>
+      • IDEA<br/>
+      • English (B2)
+    `,
+
+    education: `
+      <b>Education</b><br/>
+      Istanbul Medeniyet University – Business Administration (2018–2023)
+    `,
+
+    sgs: `
+      <b>SGS</b><br/>
+      Currently preparing for the Chartered Accountant internship entry exam (SGS) and prioritizes continuous learning and professional growth.
+    `,
+
+    whyHire: `
+      <b>Why Eren?</b><br/><br/>
+      Eren is reliable and structured in audit execution: he follows an <b>evidence-driven</b> mindset, maintains strong
+      working paper discipline, and manages client coordination professionally. He strengthens reporting and control workflows
+      using tools like Excel and SAP.
+    `,
+
+    interview: `
+      <b>Interview Mode</b><br/>
+      • “Which accounts did you work on and what was your approach?”<br/>
+      • “How do you ensure quality and traceability in working papers?”<br/>
+      • “What was your role in reconciliations/confirmations and which risks did you track?”<br/>
+      • “What is your SGS goal and study plan?”
+    `,
+
+    contact: `
+      <b>Contact</b><br/>
+      • LinkedIn: <a href="https://www.linkedin.com/in/eren-kayali-04395019a/" target="_blank" rel="noopener noreferrer">profile</a><br/>
+      • Email: <a href="mailto:eren.kayali0304@hotmail.com">eren.kayali0304@hotmail.com</a>
+    `
+  }
+};
   // ======================
   // UI HELPERS
   // ======================
